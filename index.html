@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>Radar Chart</title>
+		<script src="http://d3js.org/colorbrewer.v1.min.js"></script>
+		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+		<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+		<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+		<script type="text/javascript" src="js/compareWithRadar.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+	</head>
+
+	<body>
+		<div id="geoSelectorPanel">
+			<input type="button" value="Canada" id="btnCA" />
+			<input type="button" value="Alberta" id="btnAB" />
+			<input type="button" value="British Columbia" id="btnBC" />
+			<input type="button" value="Manitoba" id="btnMB" />
+			<input type="button" value="New Brunswick" id="btnNB" />
+			<input type="button" value="Newfoundland and Labrador" id="btnNL" />
+			<input type="button" value="Northwest Territories" id="btnNT" />
+			<input type="button" value="Nova Scotia" id="btnNS" />
+			<input type="button" value="Nunavut" id="btnNU" />
+			<input type="button" value="Ontario" id="btnON" />
+			<input type="button" value="Prince Edward Island" id="btnPE" />
+			<input type="button" value="Quebec" id="btnQC"/>
+			<input type="button" value="Saskatchewan" id="btnSK"/>
+			<input type="button" value="Yukon" id="btnYK"/>
+		</div>
+		<div id="svg"></div>
+
+		<script type= "text/javascript">
+			var width = 960,
+					height = 500,
+					outerRadius = height / 2 - 10,
+					innerRadius = 0; //if u want a big center change this
+
+			var formatDate = d3.time.format("%a"),
+					formatDay = function(d) { return formatDate(new Date(2007, 0, d)); };
+
+			var angle = d3.scale.linear()
+					.range([0, 2 * Math.PI]);
+
+			var radius = d3.scale.linear()
+					.range([innerRadius, outerRadius]);
+
+			var z = d3.scale.category10();
+
+			var line = d3.svg.line.radial()   //"cardinal-closed"
+					.interpolate("linear")
+					.angle(function(d) { return angle(d.cause); })
+					.radius(function(d) { return radius(d.value); });
+
+			var area = d3.svg.area.radial()
+					.interpolate("linear-closed")
+					.angle(function(d) { return angle(d.cause); })
+					.innerRadius(function(d) { return radius(0); })
+					.outerRadius(function(d) { return radius(d.value); });
+
+			var svg = d3.select("#svg").append("svg")
+					.attr("width", width)
+					.attr("height", height)
+					.append("g")
+					.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+
+
+
+		</script>
+	</body>
+</html>

@@ -1,0 +1,8 @@
+4barchart
+<script type="text/javascript"  src="js/4barchart.js"></script>
+<link rel="stylesheet" type="text/css" href="css/style.css">
+
+Parallel Bubbles
+	<script type="text/javascript"  src="js/parallelBubbles.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/styleBubbles.css">
+

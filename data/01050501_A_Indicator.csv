@@ -1,0 +1,183 @@
+abbr,sex,indicator,percent
+AB,Both sexes,Arthritis,14.4
+AB,Both sexes,Diabetes,4.7
+AB,Both sexes,Asthma,9
+AB,Both sexes,HBP,14.8
+AB,Both sexes,COPD,3.7
+AB,Males,Arthritis,11.3
+AB,Males,Diabetes,5.1
+AB,Males,Asthma,8.3
+AB,Males,HBP,14.8
+AB,Males,COPD,3.6
+AB,Females,Arthritis,17.7
+AB,Females,Diabetes,4.2
+AB,Females,Asthma,9.7
+AB,Females,HBP,14.9
+AB,Females,COPD,3.7
+BC,Both sexes,Arthritis,14.9
+BC,Both sexes,Diabetes,5
+BC,Both sexes,Asthma,8.1
+BC,Both sexes,HBP,16.4
+BC,Both sexes,COPD,3.8
+BC,Males,Arthritis,11.1
+BC,Males,Diabetes,5.2
+BC,Males,Asthma,6.6
+BC,Males,HBP,16.6
+BC,Males,COPD,3.3
+BC,Females,Arthritis,18.6
+BC,Females,Diabetes,4.9
+BC,Females,Asthma,9.6
+BC,Females,HBP,16.2
+BC,Females,COPD,4.3
+MB,Both sexes,Arthritis,18.6
+MB,Both sexes,Diabetes,6.8
+MB,Both sexes,Asthma,10.7
+MB,Both sexes,HBP,19.4
+MB,Both sexes,COPD,4.5
+MB,Males,Arthritis,14.7
+MB,Males,Diabetes,7
+MB,Males,Asthma,9.1
+MB,Males,HBP,18.6
+MB,Males,COPD,3.8
+MB,Females,Arthritis,22.4
+MB,Females,Diabetes,6.5
+MB,Females,Asthma,12.2
+MB,Females,HBP,20.2
+MB,Females,COPD,5.1
+NB,Both sexes,Arthritis,19.2
+NB,Both sexes,Diabetes,8.6
+NB,Both sexes,Asthma,10
+NB,Both sexes,HBP,21.7
+NB,Both sexes,COPD,6.2
+NB,Males,Arthritis,15.6
+NB,Males,Diabetes,10.6
+NB,Males,Asthma,7.9
+NB,Males,HBP,21.5
+NB,Males,COPD,4.9
+NB,Females,Arthritis,22.6
+NB,Females,Diabetes,6.7
+NB,Females,Asthma,11.9
+NB,Females,HBP,21.9
+NB,Females,COPD,7.3
+NL,Both sexes,Arthritis,21.1
+NL,Both sexes,Diabetes,11.1
+NL,Both sexes,Asthma,9
+NL,Both sexes,HBP,22.4
+NL,Both sexes,COPD,3.7
+NL,Males,Arthritis,19.2
+NL,Males,Diabetes,10.6
+NL,Males,Asthma,7.1
+NL,Males,HBP,21.3
+NL,Males,COPD,3.6
+NL,Females,Arthritis,22.9
+NL,Females,Diabetes,11.7
+NL,Females,Asthma,10.7
+NL,Females,HBP,23.5
+NL,Females,COPD,3.7
+NT,Both sexes,Arthritis,12.4
+NT,Both sexes,Diabetes,3.3
+NT,Both sexes,Asthma,6.6
+NT,Both sexes,HBP,8.9
+NT,Males,Arthritis,8.3
+NT,Males,Diabetes,3
+NT,Males,Asthma,6
+NT,Males,HBP,8.7
+NT,Females,Arthritis,16.7
+NT,Females,Diabetes,3.7
+NT,Females,Asthma,7.4
+NT,Females,HBP,9.1
+NS,Both sexes,Arthritis,22.8
+NS,Both sexes,Diabetes,8.6
+NS,Both sexes,Asthma,9.6
+NS,Both sexes,HBP,22.5
+NS,Both sexes,COPD,6.6
+NS,Males,Arthritis,18.1
+NS,Males,Diabetes,8.8
+NS,Males,Asthma,8.3
+NS,Males,HBP,21.4
+NS,Males,COPD,6
+NS,Females,Arthritis,27.2
+NS,Females,Diabetes,8.4
+NS,Females,Asthma,10.9
+NS,Females,HBP,23.4
+NS,Females,COPD,7.1
+NU,Both sexes,Arthritis,11.4
+NU,Both sexes,HBP,14.1
+NU,Males,Arthritis,10.3
+NU,Males,HBP,19.1
+NU,Females,Arthritis,12.6
+NU,Females,HBP,8.9
+ON,Both sexes,Arthritis,17.8
+ON,Both sexes,Diabetes,6.5
+ON,Both sexes,Asthma,7.8
+ON,Both sexes,HBP,18.1
+ON,Both sexes,COPD,3.6
+ON,Males,Arthritis,13.7
+ON,Males,Diabetes,7.2
+ON,Males,Asthma,6.6
+ON,Males,HBP,18.4
+ON,Males,COPD,2.7
+ON,Females,Arthritis,21.7
+ON,Females,Diabetes,5.9
+ON,Females,Asthma,9
+ON,Females,HBP,17.8
+ON,Females,COPD,4.4
+PE,Both sexes,Arthritis,21.2
+PE,Both sexes,Diabetes,7.1
+PE,Both sexes,Asthma,10.6
+PE,Both sexes,HBP,20.6
+PE,Both sexes,COPD,6.4
+PE,Males,Arthritis,17.8
+PE,Males,Diabetes,8.6
+PE,Males,Asthma,9.2
+PE,Males,HBP,22.1
+PE,Males,COPD,4.2
+PE,Females,Arthritis,24.4
+PE,Females,Diabetes,5.7
+PE,Females,Asthma,12
+PE,Females,HBP,19.3
+PE,Females,COPD,8.5
+QC,Both sexes,Arthritis,16.5
+QC,Both sexes,Diabetes,5.9
+QC,Both sexes,Asthma,9.5
+QC,Both sexes,HBP,16.9
+QC,Both sexes,COPD,4.7
+QC,Males,Arthritis,10.7
+QC,Males,Diabetes,6.6
+QC,Males,Asthma,8.3
+QC,Males,HBP,16.1
+QC,Males,COPD,4.1
+QC,Females,Arthritis,22.2
+QC,Females,Diabetes,5.3
+QC,Females,Asthma,10.6
+QC,Females,HBP,17.8
+QC,Females,COPD,5.2
+SK,Both sexes,Arthritis,18.4
+SK,Both sexes,Diabetes,5.7
+SK,Both sexes,Asthma,8.6
+SK,Both sexes,HBP,18.3
+SK,Both sexes,COPD,4.4
+SK,Males,Arthritis,15.8
+SK,Males,Diabetes,6.4
+SK,Males,Asthma,8
+SK,Males,HBP,17.5
+SK,Males,COPD,4.3
+SK,Females,Arthritis,20.8
+SK,Females,Diabetes,5.1
+SK,Females,Asthma,9.3
+SK,Females,HBP,19
+SK,Females,COPD,4.5
+YK,Both sexes,Arthritis,15.7
+YK,Both sexes,Diabetes,4.5
+YK,Both sexes,Asthma,10.1
+YK,Both sexes,HBP,13.7
+YK,Both sexes,COPD,4
+YK,Males,Arthritis,12.7
+YK,Males,Diabetes,4
+YK,Males,Asthma,6.9
+YK,Males,HBP,14.9
+YK,Males,COPD,5
+YK,Females,Arthritis,18.7
+YK,Females,Diabetes,5
+YK,Females,Asthma,13.5
+YK,Females,HBP,12.6
