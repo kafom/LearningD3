@@ -1,7 +1,39 @@
-div{
-	background-color: rgba(104, 109, 58, 0.20);
-}
 
+#geoSelectorPanel{
+	background-color: steelblue;
+	width: 150px;
+	height: 500px;
+	margin-left: 20px;
+	margin-top: 10px;
+	position:absolute; /*it is either absolute or relative*/
+	display: inline-block;
+}
+#svg{
+	width: 530px;
+	height: 530px;
+	margin-left: 180px;  /*THERE HAS TO BE A BETTER WAY TO SHIFT THIS.THINK ABOUT IT. IT SHOULDN'T BE LIKE THIS*/
+	display: inline-block;
+}
+#causeSelectorPanel{  /*being that the selectorPanels r the same can we combine them?*/
+	background-color: burlywood;
+	width: 150px;
+	height: 500px;
+	margin-left: 20px;
+	margin-top: 10px;
+	position: absolute;
+	display: inline-block;
+}
+#yearSlider{
+	margin:10px;
+	margin-top: 30px;
+
+}
+/*
+#geoSelectorPanel:all the children
+{
+	display: block;
+}
+  */
 .textfont {
 	font-family: "sans-serif";
 	font-size: "11px";

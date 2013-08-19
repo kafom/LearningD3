@@ -4,34 +4,38 @@
 	<head>
 		<title>Radar Chart</title>
 		<script src="http://d3js.org/colorbrewer.v1.min.js"></script>
+		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+		<link rel="stylesheet" type="text/css" href="css/style.css">
 		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-		<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+		<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 		<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 		<script type="text/javascript" src="js/compareWithRadar.js"></script>
-		<link rel="stylesheet" type="text/css" href="css/style.css">
+
 	</head>
 
 	<body>
-		<div id="geoSelectorPanel">
-			<input type="button" value="Canada" id="btnCA" />
-			<input type="button" value="Alberta" id="btnAB" />
-			<input type="button" value="British Columbia" id="btnBC" />
-			<input type="button" value="Manitoba" id="btnMB" />
-			<input type="button" value="New Brunswick" id="btnNB" />
-			<input type="button" value="Newfoundland and Labrador" id="btnNL" />
-			<input type="button" value="Northwest Territories" id="btnNT" />
-			<input type="button" value="Nova Scotia" id="btnNS" />
-			<input type="button" value="Nunavut" id="btnNU" />
-			<input type="button" value="Ontario" id="btnON" />
-			<input type="button" value="Prince Edward Island" id="btnPE" />
-			<input type="button" value="Quebec" id="btnQC"/>
-			<input type="button" value="Saskatchewan" id="btnSK"/>
-			<input type="button" value="Yukon" id="btnYK"/>
+		<div id=timeScale>
+			<div id="yearSlider"></div>
+			<div id="label"
 		</div>
+
+		<input type="button" id="btnGO" value="GO">
+		<div id="causeSelectorPanel"></div>
 		<div id="svg"></div>
 
+		<div id="geoSelectorPanel"></div>
+
 		<script type= "text/javascript">
-			var width = 960,
+
+			var arrayO = [1,2,3,4,5];
+			var second = arrayO.filter(function(element){return element <3;}); //slice();
+			arrayO[1] = 12345;
+			console.log(arrayO);
+			console.log(second);
+
+			currentDataset = (toWorkWithDataset.filter(filterCauses)).slice(0);
+
+			var width = 500,
 					height = 500,
 					outerRadius = height / 2 - 10,
 					innerRadius = 0; //if u want a big center change this
@@ -45,7 +49,7 @@
 			var radius = d3.scale.linear()
 					.range([innerRadius, outerRadius]);
 
-			var z = d3.scale.category10();
+			var colorGeoScale = d3.scale.category10();
 
 			var line = d3.svg.line.radial()   //"cardinal-closed"
 					.interpolate("linear")
@@ -63,9 +67,6 @@
 					.attr("height", height)
 					.append("g")
 					.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-
-
-
 
 		</script>
 	</body>

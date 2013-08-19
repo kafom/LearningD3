@@ -7,12 +7,24 @@
  */
 
 var dataset = [];
+var toWorkWithDataset = [];
 var currentDataset = [];
-var currentListOfCauses = ["Accidents (unintentional injuries)","Malignant neoplasms","Cerebrovascular diseases","Other causes of death", "Diseases of heart","Alzheimer's disease"];
+var currentListOfCauses = [];//["Accidents (unintentional injuries)","Malignant neoplasms","Cerebrovascular diseases","Other causes of death", "Diseases of heart","Alzheimer's disease"];
 //CONSTANTS
-var BOTH = 0, MALE = 1, FEMALE = 2;
-var NUMBER = 0, PERCENT = 1, MORTALITY = 2, RANK = 3;
+var  provinceAbbrList = ["CA", "AB","BC","MB","NB","NL","NT","NS","NU", "ON", "PE","QC","SK", "YK"];
+//another way to get this is to make it a domain of something and then extract all of them from it.
+var province = ["Canada", "Alberta", "British Columbia", "Manitoba", "New Brunswick","Newfoundland and Labrador", "Northwest Territories", "Nova Scotia","Nunavut","Ontario", "Prince Edward Island","Quebec","Saskatchewan", "Yukon"];
 
+var provinceList = provinceAbbrList;
+
+var BOTH = 0, MALE = 1, FEMALE = 2;
+var NUMBER = 1, PERCENT = 2, MORTALITY = 3, RANK = 0;	//TO DO MAKE THIS BASED ON THE FILE AND NOT HARD CODED CUZ THE FILE CHANGES.
+var currYear =0;
+
+var causeList = [];
+var axes;
+var first = true;
+var yearList = [];
 d3.csv("data/01020563_EDIT.csv", function(error, data)
 {
 	data.forEach(function(d)
@@ -26,42 +38,65 @@ d3.csv("data/01020563_EDIT.csv", function(error, data)
 		.key(function(d) { return d.sex;})
 		.entries(data);
 
-	//this one line also needs to be a function of its own.
-	currentDataset =  dataset[PERCENT].values[BOTH].values;
+	var causeDummyScale = d3.scale.ordinal()
+		.domain(data.map(function (c) { return c.cause;}));
+	causeList = causeDummyScale.domain();
 
-	getCurrentDataset();
-	visualize();
+	var yearDummyScale = d3.scale.ordinal().domain(data.map(function(d) { return d.year;}));
+
+	yearList = yearDummyScale.domain();
+	console.log(yearList);
+	colorGeoScale.domain(data.map(function(d){ return d.geo;}));
+
+
+
+
+
+
+	//this one line also needs to be a function of its own.
+	toWorkWithDataset =  dataset[PERCENT].values[BOTH].values;
+
+
+	//create a list of all the causes
+	createCauseButtons();
+	createGeoButtons();
 });
 
 function getCurrentDataset()
 {
 	//AT ANY POINT IN TIME THE USER SHOULD BE ABLE TO SELECT AND DESELECT SOMETHING. SO WE WILL HAVE TO COME BACK TO THIS POINT TIME AND TIME AGAIN
-	currentDataset = currentDataset.filter(filterCauses);
+	// so hereit cannot be currentDataset.filter(filterCauses) because currentDataset isn't what we think it is.
+	//var currentDataset = (toWorkWithDataset.filter(filterCauses)).slice(0);
+
+	//var newObject = jQuery.extend(true, {}, oldObject);
+	currentDataset = jQuery.extend(true, [], toWorkWithDataset.filter(filterCauses));
+
+//	console.log(currentDataset);
+
+	console.log(toWorkWithDataset);
+
+
 
 	currentDataset.forEach(function(d){
 		d.cause = currentListOfCauses.indexOf(d.cause);
 	});
 
+
 	currentDataset = currentDataset.sort(compared);
 
 	//SET THE SCALES DOMAIN
+
 	angle.domain([0, d3.max(currentDataset, function(d) { return d.cause+1; })]);
 	radius.domain([0, d3.max(currentDataset, function(d) { return d.value; })]);
 
 	currentDataset = d3.nest()
-		.key(function(d){ return d.year;})
+		.key(function(d){ return d.year;}).sortKeys(d3.ascending)
 		.key(function(d){ return d.geo;})
 		.entries(currentDataset);
 
-	//so here we are only dealing with the first year which is 2000
-	//what happens when we want to have multiple years????
-	currentDataset = currentDataset[0].values;
-	var x = 10;
-}
-var  provinceAbbrList = ["CA", "AB","BC","MB","NB","NL","NT","NS","NU", "ON", "PE","QC","SK", "YK"];
-//another way to get this is to make it a domain of something and then extract all of them from it.
-var province = ["Canada", "Alberta", "British Columbia", "Manitoba", "New Brunswick","Newfoundland and Labrador", "Northwest Territories", "Nova Scotia","Nunavut","Ontario", "Prince Edward Island","Quebec","Saskatchewan", "Yukon"];
+	console.log(currentDataset);
 
+}
 function formatGEO(currentGeo)
 {
 	switch(currentGeo){
@@ -88,14 +123,15 @@ d3.selection.prototype.moveToFront = function() {
 		this.parentNode.appendChild(this);
 	});
 };
+
 function visualize()
 {
 	svg.selectAll(".layer")
-		.data(currentDataset)
+		.data(currentDataset[currYear].values)
 		.enter().append("path")
 		.attr("class", "layer")
 		.attr("d", function(d) { return area(d.values); })
-		.style("fill", function(d, i) { return z(i); })
+		.style("fill", function(d, i) { return colorGeoScale(d.key); })
 		.attr("opacity", 0.3)
 		.attr("id", function(d) {return "path"+formatGEO(d.key);})
 		.on("click", function(){
@@ -103,7 +139,6 @@ function visualize()
 		})
 		.on("mouseover", function()
 		{
-
 			d3.select(this).attr("opacity", 0.70).attr("stroke", "black").attr("stroke-width", 5);
 			var sel = d3.select(this);
 			sel.moveToFront();
@@ -113,11 +148,14 @@ function visualize()
 		})
 		.on("dblclick", function(){
 			console.log("I have been double clicked oooooooooooooooooooo");
-//			d3.select(this).attr("opacity", 0);
 			d3.select(this).attr("display", "none");
 		});
 
-	svg.selectAll(".axis")
+	     createAxis();
+}
+function createAxis()
+{
+	axes = svg.selectAll(".axis")
 		.data(d3.range(angle.domain()[1]))
 		.enter().append("g")
 		.attr("class", "axis")
@@ -132,12 +170,27 @@ function visualize()
 		.text(function(d) { return formatCauseName(d); });
 }
 
+function updateViz()
+{
+	//first bind data
+	var newRadar = svg.selectAll(".layer")
+					  .data(currentDataset[currYear].values);
+	//UPDATE AND REDRAW THE PATHS
+	newRadar.transition().attr("d", function(d) { return area(d.values); })
+		.style("fill", function(d, i) { return colorGeoScale(d.key); })
+		.attr("opacity", 0.3);
+
+	//DELETE THE OLD AXES
+	$('.axis').remove();
+	//CREATE NEW AXIS
+	createAxis();
+}
+
 function filterCauses(element, index, array)
 {
 	//return element.sex != "Both" && element.unit == currentUnit && element.cause == currentCause  && element.age == currentAge;
 	//return element.cause == currentListOfCauses;
-	return (currentListOfCauses.indexOf(element.cause) != -1);
-
+	return (currentListOfCauses.indexOf(element.cause) !== -1);
 }
 
 function formatCauseName(currCause)
@@ -150,11 +203,8 @@ function compared(a,b)
 	return a.cause - b.cause;
 }
 
-var provinceList = provinceAbbrList;
-
-
 //do you need this or do you just need to turn off the guy for it
-//does there need to be an arry. I believe for the causes yes, but for this not really
+//does there need to be an array. I believe for the causes yes, but for this not really
 $(document).ready(function()
 {
 	$('#geoSelectorPanel').click(function(event)
@@ -162,20 +212,97 @@ $(document).ready(function()
 		var target = event.target;
 		var nameOfPro = (target.id).substr(3,target.id.length);
 		var loc= provinceList.indexOf(nameOfPro);
+		var locPath = "path"+nameOfPro;
 		if(loc !== -1)
 		{	//remove it
 			provinceList.splice(loc,1);
-			var locPath = "path"+nameOfPro;
-			//$(locPath)
-			//document.getElementById(locPath)
 			d3.select(document.getElementById(locPath)).attr("display", "none");
 		}
 		else
 		{	//add it
 			provinceList.push(nameOfPro);
+			d3.select(document.getElementById(locPath)).attr("display", "inline");
 		}
-	//	console.log(provinceList);
 
 	});
+
+	$('#causeSelectorPanel').click(function(event)
+	{
+		var target = event.target;
+		var loc = currentListOfCauses.indexOf(target.value);
+		if(loc !== -1)
+		{
+			currentListOfCauses.splice(loc,1);
+		}
+		else
+		{
+			if(currentListOfCauses.length < 10)
+				currentListOfCauses.push(target.value);
+			else
+				console.log("IT IS TOO MANY VARIABLES DONT DO ANYTHING");
+		}
+
+		console.log(currentListOfCauses);
+	});
+	$('#btnGO').click(function(){
+
+		getCurrentDataset();
+		if(first)
+		{
+			visualize();
+			first = false;
+		}
+		else
+		{
+			updateViz();
+		}
+
+	});
+	$( "#yearSlider" ).slider(
+		{
+			range: false, /*we just one value not a range */
+			from: 2000,
+			to: 2009,
+			min: 2000,
+			round: 1,
+			max: 2009, //this should take in values from the other place not here.
+			step: 1,
+			animate: "slow",
+			format: { format: '##.0', locale: 'de' },
+			dimension: '&nbsp;€',
+			//slide,
+			change: function(e,ui)
+			{
+				//this works now because we have sorted the dataset.
+				currYear = $(this).slider("value") - 2000;
+				console.log(currYear);
+				updateViz();
+			}
+		});
 });
+
+function createGeoButtons()
+{
+	for(var i = 0; i < provinceAbbrList.length; i++)
+	{
+		var btn = document.createElement("input");
+		btn.setAttribute("type", "button");
+		btn.id = "btn"+provinceAbbrList[i];
+		btn.value = province[i];       //this shouldn't be province it should read it in from the data.csv input file.
+		document.getElementById('geoSelectorPanel').appendChild(btn);
+	}
+}
+function createCauseButtons()
+{
+	for(var i = 0; i < causeList.length; i++)
+	{
+		var btn = document.createElement("input");
+		btn.setAttribute("type", "button");
+		btn.id = "btn"+causeList[i];
+		btn.value = causeList[i];       //this shouldn't be province it should read it in from the data.csv input file.
+		document.getElementById('causeSelectorPanel').appendChild(btn);
+	}
+}
+
+
 
