@@ -48,11 +48,6 @@ d3.csv("data/01020563_EDIT.csv", function(error, data)
 	console.log(yearList);
 	colorGeoScale.domain(data.map(function(d){ return d.geo;}));
 
-
-
-
-
-
 	//this one line also needs to be a function of its own.
 	toWorkWithDataset =  dataset[PERCENT].values[BOTH].values;
 
@@ -68,22 +63,13 @@ function getCurrentDataset()
 	// so hereit cannot be currentDataset.filter(filterCauses) because currentDataset isn't what we think it is.
 	//var currentDataset = (toWorkWithDataset.filter(filterCauses)).slice(0);
 
-	//var newObject = jQuery.extend(true, {}, oldObject);
 	currentDataset = jQuery.extend(true, [], toWorkWithDataset.filter(filterCauses));
-
-//	console.log(currentDataset);
-
-	console.log(toWorkWithDataset);
-
-
 
 	currentDataset.forEach(function(d){
 		d.cause = currentListOfCauses.indexOf(d.cause);
 	});
 
-
 	currentDataset = currentDataset.sort(compared);
-
 	//SET THE SCALES DOMAIN
 
 	angle.domain([0, d3.max(currentDataset, function(d) { return d.cause+1; })]);
@@ -150,15 +136,14 @@ function visualize()
 			console.log("I have been double clicked oooooooooooooooooooo");
 			d3.select(this).attr("display", "none");
 		});
-
-	     createAxis();
+	     createAxisRadar();
 }
-function createAxis()
+function createAxisRadar()
 {
-	axes = svg.selectAll(".axis")
+	axes = svg.selectAll(".axisRadar")
 		.data(d3.range(angle.domain()[1]))
 		.enter().append("g")
-		.attr("class", "axis")
+		.attr("class", "axisRadar")
 		.attr("transform", function(d) { return "rotate(" + angle(d) * 180 / Math.PI + ")"; })
 		.call(d3.svg.axis()
 			.scale(radius.copy().range([-innerRadius, -outerRadius]))
@@ -181,9 +166,9 @@ function updateViz()
 		.attr("opacity", 0.3);
 
 	//DELETE THE OLD AXES
-	$('.axis').remove();
+	$('.axisRadar').remove();
 	//CREATE NEW AXIS
-	createAxis();
+	createAxisRadar();
 }
 
 function filterCauses(element, index, array)
