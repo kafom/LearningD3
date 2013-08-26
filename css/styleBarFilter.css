@@ -1,4 +1,8 @@
-    line
+    .highlight{
+		border-color: black;
+		stroke: black;
+	}
+	line
     {
         
       stroke: grey;

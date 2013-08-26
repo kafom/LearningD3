@@ -114,13 +114,15 @@ function initVisualize()
 		.enter()
 		.append("rect")
 		.attr("class", "bars")
+		.attr("id", function(d,i) { return "bar"+i;})
 		.attr("y", function(d) { return yScale(d.y1);})
 		.attr("height", function(d) { return yScale(d.y0) - yScale(d.y1);})
 		.attr("width", xScale.rangeBand())
 		.attr("fill", function(d) { return cCauseScale(d.name);})
+		.attr("opacity", 0.7)
 		.on("mouseover", function (d)
 		{
-			d3.select(this).attr("opacity", "0.7");
+			d3.select(this).attr("opacity", 1.0);
 			var xPos =  xScale(d3.select(this).node().parentNode.__data__.value);
 			var yPos = parseFloat(d3.select(this).attr("y")) + 10 ;
 			var thisCause = d.name;
@@ -139,7 +141,7 @@ function initVisualize()
 		})
 		.on("mouseout", function ()
 		{
-			d3.select(this).attr("opacity", "1.0");
+			d3.select(this).attr("opacity", 0.7);
 			d3.select("#tooltip").remove();
 		})
 		.on("click", function(d)
@@ -242,29 +244,6 @@ function updateAxis()
 		//     .attr("dy", ".15em")
 		.attr("transform", function(d) {return "rotate(-65)"});
 }
-/*function createLegend()
-{
-	var rectHeight = 10, rectWidth = 10;
-	var legend = legendGroup.selectAll(".legend")
-		.data(cCauseScale.domain().slice().reverse())
-		.enter()
-		.append("g")
-		.attr("class", "legend")
-		.attr("transform", function(d, i) { return "translate(0," + i * rectHeight + ")"; });
-
-	legend.append("rect")
-		.attr("width", rectWidth)
-		.attr("height", rectHeight)
-		.style("fill", cCauseScale);
-
-	legend.append("text")
-		.attr("x", rectWidth)
-		.attr("y", rectHeight/2)
-		.attr("dy", ".35em")
-		.style("text-anchor", "left")
-		.text(function(d) { return d; });
-
-} */
 function update()
 {
 	currentArray.length = 0;
