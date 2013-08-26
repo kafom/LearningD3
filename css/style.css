@@ -1,29 +1,65 @@
 
-
-/*
-#geoSelectorPanel:all the children
-{
-	display: block;
-}
-  */
-.textfont {
-	font-family: "sans-serif";
-	font-size: "11px";
-	fill: "white";
-}
-body {
+body{
+	width: 1100px;
+	height: 700px;
 	font: 10px sans-serif;
 }
-
-.axisRadar line {
-	stroke: #000;
+#barSide{
+	background-color: rgba(78, 237, 23, 0.45);
+	display: inline-block;
+	width:640px;
+	height:600px;
+	padding: 5px;
 }
-
-.axisRadar path {
-	fill: none;
-	stroke: #000;
+#controlPanel{
+	width: 630px;
+	height:40px;
+	background-color: darkmagenta;
+	padding: 5px;
 }
-
-.axisRadar + .axisRadar g text {
+#menuYear{
 	display: none;
+}
+#svgBar{
+	background-color: rgba(206, 216, 202, 0.84);
+	width:630px;
+	height:530px;
+	padding:5px;
+}
+#radarSide{
+	background-color: #0be7ed;
+	display:inline-block;
+	width:420px;
+	height:600px;
+	padding:5px;
+}
+#geoSelectorPanel{
+	background-color: steelblue;
+	width: 70px;
+	height: 550px;
+	margin-left: 350px; /*there have to be a better way to do this ooooooooooooooooo*/
+	margin-top: 10px;
+	position:relative; /*it is either absolute or relative*/
+	display: inline-block;
+}
+#svgRadar {
+	width: 320px;
+	height: 320px;
+	margin-left: 20px;  /*THERE HAS TO BE A BETTER WAY TO SHIFT THIS.THINK ABOUT IT. IT SHOULDN'T BE LIKE THIS*/
+	margin-top: 50px;
+	display: inline-block;
+	background-color: #e6e6e6;
+	position: absolute;
+}
+#causeSelectorPanel{  /*being that the selectorPanels r the same can we combine them?*/
+	background-color: burlywood;
+	width: 10px; /*150*/
+	height: 550px;
+	margin-left: 2px;
+	position: absolute;
+	display: inline-block;
+}
+#yearSlider{
+	margin:10px;
+	margin-top: 30px;
 }

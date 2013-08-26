@@ -1,0 +1,26 @@
+
+.textfont {
+	font-family: "sans-serif";
+	font-size: "11px";
+	fill: "white";
+}
+
+.axisRadar line {
+	stroke: #000;
+}
+
+.axisRadar path {
+	fill: none;
+	stroke: #000;
+}
+
+.axisRadar + .axisRadar g text {
+	display: none;
+}
+
+/*
+#geoSelectorPanel:all the children
+{
+	display: block;
+}
+  */
