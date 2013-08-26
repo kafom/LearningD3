@@ -242,7 +242,7 @@ function updateAxis()
 		//     .attr("dy", ".15em")
 		.attr("transform", function(d) {return "rotate(-65)"});
 }
-function createLegend()
+/*function createLegend()
 {
 	var rectHeight = 10, rectWidth = 10;
 	var legend = legendGroup.selectAll(".legend")
@@ -264,7 +264,7 @@ function createLegend()
 		.style("text-anchor", "left")
 		.text(function(d) { return d; });
 
-}
+} */
 function update()
 {
 	currentArray.length = 0;
