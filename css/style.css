@@ -32,24 +32,25 @@ body{
 	width:420px;
 	height:600px;
 	padding:5px;
+	position: absolute;
 }
 #geoSelectorPanel{
 	background-color: steelblue;
-	width: 70px;
-	height: 550px;
-	margin-left: 350px; /*there have to be a better way to do this ooooooooooooooooo*/
+	width: 390px;
+	height: 100px;
+	margin-left: 10px; /*there have to be a better way to do this ooooooooooooooooo*/
 	margin-top: 10px;
 	position:relative; /*it is either absolute or relative*/
-	display: inline-block;
+	display: block;
 }
 #svgRadar {
-	width: 320px;
-	height: 320px;
+	width: 370px;
+	height: 370px;
 	margin-left: 20px;  /*THERE HAS TO BE A BETTER WAY TO SHIFT THIS.THINK ABOUT IT. IT SHOULDN'T BE LIKE THIS*/
-	margin-top: 50px;
-	display: inline-block;
+	margin-top: 20px;
+	display: block;
 	background-color: #e6e6e6;
-	position: absolute;
+	position: relative; /*not absolute*/
 }
 #causeSelectorPanel{  /*being that the selectorPanels r the same can we combine them?*/
 	background-color: burlywood;
@@ -58,6 +59,9 @@ body{
 	margin-left: 2px;
 	position: absolute;
 	display: inline-block;
+}
+#timeScale{
+	width: 390px;
 }
 #yearSlider{
 	margin:10px;

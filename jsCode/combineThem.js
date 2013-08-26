@@ -15,9 +15,11 @@ function createLegend()
 		.append("g")
 		.attr("class", "legend")
 		.attr("transform", function(d, i) { return "translate(0," + i * rectHeight + ")"; })
-		.on("click", function(d){
+		.on("click", function(d)
+		{
 			console.log(d);
-});
+			selectCause(d);
+		});
 
 	//the width should be the length of the text plus about 10
 	legend.append("rect")

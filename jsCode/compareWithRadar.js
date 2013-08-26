@@ -53,7 +53,7 @@ d3.csv("data/01020563_EDIT.csv", function(error, data)
 
 
 	//create a list of all the causes
-	createCauseButtons();
+//	createCauseButtons();
 	createGeoButtons();
 });
 
@@ -211,24 +211,7 @@ $(document).ready(function()
 
 	});
 
-	$('#causeSelectorPanel').click(function(event)
-	{
-		var target = event.target;
-		var loc = currentListOfCauses.indexOf(target.value);
-		if(loc !== -1)
-		{
-			currentListOfCauses.splice(loc,1);
-		}
-		else
-		{
-			if(currentListOfCauses.length < 10)
-				currentListOfCauses.push(target.value);
-			else
-				console.log("IT IS TOO MANY VARIABLES DONT DO ANYTHING");
-		}
-
-		console.log(currentListOfCauses);
-	});
+//	selectCause();
 	$('#btnGO').click(function(){
 
 		getCurrentDataset();
@@ -289,5 +272,42 @@ function createCauseButtons()
 	}
 }
 
+function selectCause(currCause)
+{
+	var loc = currentListOfCauses.indexOf(currCause);
+	if(loc !== -1)
+	{
+		currentListOfCauses.splice(loc,1);
+	}
+	else
+	{
+		if(currentListOfCauses.length < 10)
+			currentListOfCauses.push(currCause);
+		else
+			console.log("IT IS TOO MANY VARIABLES DONT DO ANYTHING");
+	}
+
+	console.log(currentListOfCauses);
+	/*$('#causeSelectorPanel').click(function(event)
+	{
+		var target = event.target;
+		var loc = currentListOfCauses.indexOf(target.value);
+		if(loc !== -1)
+		{
+			currentListOfCauses.splice(loc,1);
+		}
+		else
+		{
+			if(currentListOfCauses.length < 10)
+				currentListOfCauses.push(target.value);
+			else
+				console.log("IT IS TOO MANY VARIABLES DONT DO ANYTHING");
+		}
+
+		console.log(currentListOfCauses);
+	});
+	*/
+
+}
 
 

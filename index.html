@@ -15,6 +15,7 @@
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
 
 	<script type="text/javascript" src="jsCode/stackedBar.js"></script>
+	<script type="text/javascript" src="jsCode/combineThem.js"></script>
 	<script type="text/javascript" src="jsCode/compareWithRadar.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<link rel="stylesheet" type="text/css" href="css/styleBarFilter.css">
@@ -106,9 +107,8 @@
 	    <div id="svgBar"></div>
 	</div>
 	<div id="radarSide">
-		<div id="causeSelectorPanel"></div>
-		<div id="svgRadar"></div>
 		<div id="geoSelectorPanel"></div>
+		<div id="svgRadar"></div>
 		<div id="timeScale">
 			<div id="yearSlider"></div>
 			<div id="label"></div>
@@ -120,7 +120,7 @@
 
 	//RADAR
 	//these values need to be adjusted.
-	var width = 320,height = 320,outerRadius = height / 2 - 10, innerRadius = 0; //if u want a big center change this
+	var width = 370,height = 370,outerRadius = height / 2 - 10, innerRadius = 0; //if u want a big center change this
 
 	var angle = d3.scale.linear()
 			.range([0, 2 * Math.PI]);
