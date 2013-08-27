@@ -129,6 +129,11 @@ function initVisualize()
 			var thisValue = d.value;
 			var thisHeight =  yScale(d.y0) - yScale(d.y1);
 
+			var loc = cCauseScale.domain().indexOf(thisCause);
+			var labelName = "#causeLabel"+(50-loc);
+			d3.select(labelName).style("fill", cCauseScale(thisCause));
+
+			console.log(loc+labelName);
 			svgBar.append("text")
 				.attr("id", "tooltip")
 				.attr("x", xPos ) //this is translated.
@@ -139,10 +144,15 @@ function initVisualize()
 				.attr("fill", "black")
 				.text(function(){ return thisCause + ":"+thisHeight+":"+ thisValue});
 		})
-		.on("mouseout", function ()
+		.on("mouseout", function (d)
 		{
 			d3.select(this).attr("opacity", 0.7);
 			d3.select("#tooltip").remove();
+
+			var thisCause = d.name;
+			var loc = cCauseScale.domain().indexOf(thisCause);
+			var labelName = "#causeLabel"+(50-loc);
+			d3.select(labelName).style("fill", "none");
 		})
 		.on("click", function(d)
 		{

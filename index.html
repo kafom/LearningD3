@@ -113,7 +113,7 @@
 			<div id="yearSlider"></div>
 			<div id="label"></div>
 		</div>
-		<input type="button" id="btnGO" value="GO">
+		<input type="button" id="btnCompare" value="Compare causes">
 	</div>
 	<script type="text/javascript">
 
@@ -128,7 +128,7 @@
 	var radius = d3.scale.linear()
 			.range([innerRadius, outerRadius]);
 
-	var colorGeoScale = d3.scale.category10();
+	var colorGeoScale = d3.scale.category20();
 
 	var line = d3.svg.line.radial()
 			.interpolate("linear")

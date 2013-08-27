@@ -18,41 +18,44 @@ function createLegend()
 		.on("click", function(d,i)
 		{
 			var labelName = "#causeLabel"+i;
+			var barName = "#bar"+(50-i);
+			var rects = d3.selectAll(barName);
 
 			if(d3.select(labelName).attr("class")=="selected")
-				d3.select(labelName).style('fill','white').attr('class', "");
+			{
+				d3.select(labelName).style("stroke", "none").attr('class',"");
+				rects.style("stroke", "none");
+			}
 			else
-				d3.select(labelName).style('fill',cCauseScale).attr("class", "selected");
+			{
+				d3.select(labelName).style("stroke", "black").style("stroke-width",3).attr("class", "selected");
+				rects.style("stroke", "black").style("stroke-width", 3);
+			}
+
 			selectCause(d);
 		})
 		.on("mouseover", function(d,i)
 		{
-			var labelName = "#causeLabel"+i;
-			$(labelName).toggleClass("highlight");
-
+			d3.select("#causeLabel"+i).style("fill", cCauseScale);
 			var barName = "#bar"+(50-i);
-			var rects = d3.selectAll(barName);
-			rects.attr("opacity", 1.0);
-			console.log(rects);
+			d3.selectAll(barName).attr("opacity",1.0);
 		})
 		.on("mouseout", function(d,i)
 		{
-			var labelName = "#causeLabel"+i;
-			$(labelName).toggleClass("highlight");
+			d3.select("#causeLabel"+i).style('fill','none');
 			var barName = "#bar"+(50-i);
-			var rects = d3.selectAll(barName);
-			rects.attr("opacity", 0.7);
+			d3.selectAll(barName).attr("opacity",0.7);
 		});
 
 
 	legend.append("rect")
 		.attr("id", function(d,i){ return "causeLabel"+ i;})
 		.attr("x", rectWidth/2)
-		.attr("width", function(d){ return rectWidth+1+ 3.5*d.length;})
+		.attr("width", function(d){ return rectWidth+2+ 3.5*d.length;})
 		.attr("height", rectHeight)
 		.attr("rx", 3)
 		.attr("ry", 3)
-		.style("fill", "white");
+		.style("fill", "none");
 
 
 	legend.append("rect")
@@ -61,7 +64,7 @@ function createLegend()
 		.style("fill", cCauseScale);
 
 	legend.append("text")
-		.attr("x", rectWidth)
+		.attr("x", rectWidth+1)
 		.attr("y", rectHeight/2)
 		.attr("dy", ".35em")
 		.style("text-anchor", "left")

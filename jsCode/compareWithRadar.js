@@ -15,7 +15,7 @@ var  provinceAbbrList = ["CA", "AB","BC","MB","NB","NL","NT","NS","NU", "ON", "P
 //another way to get this is to make it a domain of something and then extract all of them from it.
 var province = ["Canada", "Alberta", "British Columbia", "Manitoba", "New Brunswick","Newfoundland and Labrador", "Northwest Territories", "Nova Scotia","Nunavut","Ontario", "Prince Edward Island","Quebec","Saskatchewan", "Yukon"];
 
-var provinceList = provinceAbbrList;
+var provinceList = ["CA", "AB","BC","MB","NB","NL","NT","NS","NU", "ON", "PE","QC","SK", "YK"];
 
 var BOTH = 0, MALE = 1, FEMALE = 2;
 var NUMBER = 1, PERCENT = 2, MORTALITY = 3, RANK = 0;	//TO DO MAKE THIS BASED ON THE FILE AND NOT HARD CODED CUZ THE FILE CHANGES.
@@ -25,7 +25,7 @@ var causeList = [];
 var axes;
 var first = true;
 var yearList = [];
-d3.csv("data/01020563_EDIT.csv", function(error, data)
+d3.csv("data/01020563_EDITr2.csv", function(error, data)
 {
 	data.forEach(function(d)
 	{
@@ -83,27 +83,7 @@ function getCurrentDataset()
 	console.log(currentDataset);
 
 }
-function formatGEO(currentGeo)
-{
-	switch(currentGeo){
-		case province[0]:return provinceAbbrList[0]; break;
-		case province[1]:return provinceAbbrList[1]; break;
-		case province[2]:return provinceAbbrList[2]; break;
-		case province[3]:return provinceAbbrList[3]; break;
-		case province[4]:return provinceAbbrList[4]; break;
-		case province[5]:return provinceAbbrList[5]; break;
-		case province[6]:return provinceAbbrList[6]; break;
-		case province[7]:return provinceAbbrList[7]; break;
-		case province[8]:return provinceAbbrList[8]; break;
-		case province[9]:return provinceAbbrList[9]; break;
-		case province[10]:return provinceAbbrList[10]; break;
-		case province[11]:return provinceAbbrList[11]; break;
-		case province[12]:return provinceAbbrList[12]; break;
-		case province[13]:return provinceAbbrList[13]; break;
 
-	}
-
-}
 d3.selection.prototype.moveToFront = function() {
 	return this.each(function(){
 		this.parentNode.appendChild(this);
@@ -118,19 +98,19 @@ function visualize()
 		.attr("class", "layer")
 		.attr("d", function(d) { return area(d.values); })
 		.style("fill", function(d, i) { return colorGeoScale(d.key); })
-		.attr("opacity", 0.3)
-		.attr("id", function(d) {return "path"+formatGEO(d.key);})
+		.attr("opacity", 0.6)
+		.attr("id", function(d) {return "path"+d.key;})
 		.on("click", function(){
 			console.log('I have been clicked'+ d3.select(this).node().__data__.key);
 		})
 		.on("mouseover", function()
 		{
-			d3.select(this).attr("opacity", 0.70).attr("stroke", "black").attr("stroke-width", 5);
+			d3.select(this).attr("opacity", 1.0).attr("stroke", "black").attr("stroke-width", 5);
 			var sel = d3.select(this);
 			sel.moveToFront();
 		})
 		.on("mouseout", function(){
-			d3.select(this).attr("opacity", 0.3).attr("stroke-width",1);
+			d3.select(this).attr("opacity", 0.6).attr("stroke-width",1);
 		})
 		.on("dblclick", function(){
 			console.log("I have been double clicked oooooooooooooooooooo");
@@ -162,8 +142,8 @@ function updateViz()
 					  .data(currentDataset[currYear].values);
 	//UPDATE AND REDRAW THE PATHS
 	newRadar.transition().attr("d", function(d) { return area(d.values); })
-		.style("fill", function(d, i) { return colorGeoScale(d.key); })
-		.attr("opacity", 0.3);
+		.style("fill", function(d) { return colorGeoScale(d.key); })
+		.attr("opacity", 0.6);
 
 	//DELETE THE OLD AXES
 	$('.axisRadar').remove();
@@ -197,22 +177,24 @@ $(document).ready(function()
 		var target = event.target;
 		var nameOfPro = (target.id).substr(3,target.id.length);
 		var loc= provinceList.indexOf(nameOfPro);
-		var locPath = "path"+nameOfPro;
+		var locPath = "#path"+nameOfPro;
+
 		if(loc !== -1)
 		{	//remove it
 			provinceList.splice(loc,1);
-			d3.select(document.getElementById(locPath)).attr("display", "none");
+			d3.select(locPath).style("display", "none");
+			target.style.background= "";
 		}
 		else
 		{	//add it
 			provinceList.push(nameOfPro);
-			d3.select(document.getElementById(locPath)).attr("display", "inline");
+			d3.select(locPath).style("display", "inline");
+			target.style.background = colorGeoScale(nameOfPro);
 		}
 
 	});
 
-//	selectCause();
-	$('#btnGO').click(function(){
+	$('#btnCompare').click(function(){
 
 		getCurrentDataset();
 		if(first)
@@ -251,25 +233,28 @@ $(document).ready(function()
 
 function createGeoButtons()
 {
-	for(var i = 0; i < provinceAbbrList.length; i++)
+	var nRow = 2, nCol = 7;
+	var geoTable = document.createElement("table");
+	for(var r = 0; r < nRow; r++)
 	{
-		var btn = document.createElement("input");
-		btn.setAttribute("type", "button");
-		btn.id = "btn"+provinceAbbrList[i];
-		btn.value = province[i];       //this shouldn't be province it should read it in from the data.csv input file.
-		document.getElementById('geoSelectorPanel').appendChild(btn);
+		var newRow = document.createElement("tr");
+		for(var c = 0; c<nCol; c++ )
+		{
+			var newCol = document.createElement("td");
+			var i = (r*nCol)+c;
+			var btn = document.createElement("input");
+			btn.setAttribute("type", "button");
+			btn.className = "geoBtn";
+			btn.id = "btn"+colorGeoScale.domain()[i];
+			btn.value = colorGeoScale.domain()[i];      // //this shouldn't be province it should read it in from the data.csv input file.
+			btn.style.background= colorGeoScale.range()[i];
+			newCol.appendChild(btn);
+			newRow.appendChild(newCol);
+		}
+		geoTable.appendChild(newRow);
 	}
-}
-function createCauseButtons()
-{
-	for(var i = 0; i < causeList.length; i++)
-	{
-		var btn = document.createElement("input");
-		btn.setAttribute("type", "button");
-		btn.id = "btn"+causeList[i];
-		btn.value = causeList[i];       //this shouldn't be province it should read it in from the data.csv input file.
-		document.getElementById('causeSelectorPanel').appendChild(btn);
-	}
+	document.getElementById('geoSelectorPanel').appendChild(geoTable);
+
 }
 
 function selectCause(currCause)
@@ -288,25 +273,6 @@ function selectCause(currCause)
 	}
 
 	console.log(currentListOfCauses);
-	/*$('#causeSelectorPanel').click(function(event)
-	{
-		var target = event.target;
-		var loc = currentListOfCauses.indexOf(target.value);
-		if(loc !== -1)
-		{
-			currentListOfCauses.splice(loc,1);
-		}
-		else
-		{
-			if(currentListOfCauses.length < 10)
-				currentListOfCauses.push(target.value);
-			else
-				console.log("IT IS TOO MANY VARIABLES DONT DO ANYTHING");
-		}
-
-		console.log(currentListOfCauses);
-	});
-	*/
 
 }
 
