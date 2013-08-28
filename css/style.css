@@ -62,8 +62,11 @@ body{
 }
 #timeScale{
 	width: 390px;
+	margin-left:10px;
+}
+.sliderStepLabel{
+	font-style: normal;
 }
 #yearSlider{
-	margin:10px;
 	margin-top: 30px;
 }
