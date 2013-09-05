@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<!--
+ Combine the disease?
+ For tuesday think about doing the ALL ages and the YEAR location at the botto as well.
+
+-->
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Cause Of Death Bar With Static Filters</title>
+	<script src="http://d3js.org/colorbrewer.v1.min.js"></script>
+	<script type="text/javascript" src="d3/d3.v3.js"></script>
+	<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+
+	<script type="text/javascript" src="jsCode/stackedBar.js"></script>
+	<script type="text/javascript" src="jsCode/combineThem.js"></script>
+	<script type="text/javascript" src="jsCode/compareWithRadar.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="css/styleBarFilter.css">
+	<link rel="stylesheet" type="text/css" href="css/styleRadar.css">
+	<style type="text/css">
+
+	</style>
+</head>
+
+<body>
+	<div id= "barSide">
+		<div id="controlPanel">
+			<div id = "buttonsSex">
+				<div class = "sex-button">
+					<input type="radio" name="sex" id ="button1" onclick = "setSexM()">
+					<label for = "button1" unselectable> Male</label>
+				</div>
+				<div class = "sex-button">
+					<input type="radio" name="sex" id ="button2" checked onclick = "setSexB()">
+					<label for = "button2" unselectable> Both</label>
+				</div>
+				<div class = "sex-button">
+					<input type="radio" name="sex" id ="button3"  onclick = "setSexF()">
+					<label for = "button3" unselectable> Female</label>
+				</div>
+			</div>
+			<form>
+			<select id="menuYear" onchange="setYear(this.form.menuYear)">
+				<option>2000</option>
+				<option>2001</option>
+				<option>2002</option>
+				<option>2003</option>
+				<option>2004</option>
+				<option>2005</option>
+				<option>2006</option>
+				<option>2007</option>
+				<option>2008</option>
+				<option>2009</option>
+			</select>
+		</form>
+					<form>
+			<select id="menuAge" onchange="setAge(this.form.menuAge)">
+				<option>1 - 4</option>
+				<option>5 - 9</option>
+				<option>10 - 14</option>
+				<option>15 - 19</option>
+				<option>20 - 24</option>
+				<option>25 - 29</option>
+				<option>30 - 34</option>
+				<option>35 - 39</option>
+				<option>40 - 44</option>
+				<option>45 - 49</option>
+				<option>50 - 54</option>
+				<option>55 - 59</option>
+				<option>60 - 64</option>
+				<option>65 - 69</option>
+				<option>70 - 74</option>
+				<option>75 - 79</option>
+				<option>80 - 84</option>
+				<option>85 - 89</option>
+				<option>90 and over</option>
+			</select>
+		</form>
+					<div id = "buttonsUnit">
+			<div class = "unit-button">
+				<input type="radio" name="unit" id ="button4" checked onclick = "setUnitPercent()">
+				<label for = "button4" unselectable> %</label>
+			</div>
+			<div class = "unit-button">
+				<input type="radio" name="unit" id ="button5" onclick = "setUnitRate()">
+				<label for = "button5" unselectable> Rate</label>
+			</div>
+			<div class = "unit-button">
+				<input type="radio" name="unit" id ="button6"  onclick = "setUnitNum()">
+				<label for = "button6" unselectable> #</label>
+			</div>
+		</div>
+					<div id = "buttonXFilter">
+			<div class = "xFilter-button">
+				<input type="radio" name="xFilter" id ="button7" checked onclick = "setXFilterAge()">
+				<label for = "button7" unselectable> AGE</label>
+			</div>
+			<div class = "xFilter-button">
+				<input type="radio" name="xFilter" id ="button8" onclick = "setXFilterYear()">
+				<label for = "button8" unselectable> YEAR</label>
+			</div>
+</div>
+		</div>
+	    <div id="svgBar"></div>
+	</div>
+	<div id="radarSide">
+		<div id="geoSelectorPanel"></div>
+		<div id="svgRadar"></div>
+		<div id="timeScale">
+			<div id="yearSlider"></div>
+			<div class="sliderStepLabel">
+				<span style="display:inline-block;width: 3%;text-align:left;margin-right: 5.3%;">|<br>2000</span>
+				<span style="display:inline-block;width: 5%;text-align:center;margin-right: 5.3%;">|<br>2001</span>
+				<span style="display:inline-block;width: 5%;text-align:center;margin-right: 5.3%;">|<br>2002</span>
+				<span style="display:inline-block;width: 5%;text-align:center;margin-right: 5.3%;">|<br>2003</span>
+				<span style="display:inline-block;width: 5%;text-align:center;margin-right: 5.3%;">|<br>2004</span>
+				<span style="display:inline-block;width: 5%;text-align:center;margin-right: 5.3%;">|<br>2005</span>
+				<span style="display:inline-block;width: 5%;text-align:center;margin-right: 5.3%;">|<br>2006</span>
+				<span style="display:inline-block;width: 5%;text-align:center;margin-right: 5.3%;">|<br>2007</span>
+				<span style="display:inline-block;width: 5%;text-align:center;margin-right: 3%;">|<br>2008</span>
+				<span style="display:inline-block;width: 4.5%;text-align:right;">|<br>2009</span>
+			</div>
+
+			<div id="label"></div>
+		</div>
+		<input type="button" id="btnCompare" value="Compare causes">
+	</div>
+	<script type="text/javascript">
+
+
+	//RADAR
+	//these values need to be adjusted.
+	var width = 370,height = 370,outerRadius = height / 2 - 10, innerRadius = 0; //if u want a big center change this
+
+	var angle = d3.scale.linear()
+			.range([0, 2 * Math.PI]);
+
+	var radius = d3.scale.linear()
+			.range([innerRadius, outerRadius]);
+
+	var colorGeoScale = d3.scale.category20();
+
+	var line = d3.svg.line.radial()
+			.interpolate("linear")
+			.angle(function(d) { return angle(d.cause); })
+			.radius(function(d) { return radius(d.value); });
+
+	var area = d3.svg.area.radial()
+			.interpolate("linear-closed")
+			.angle(function(d) { return angle(d.cause); })
+			.innerRadius(function(d) { return radius(0); })
+			.outerRadius(function(d) { return radius(d.value); });
+
+	var svg = d3.select("#svgRadar").append("svg")
+			.attr("width", width)
+			.attr("height", height)
+			.append("g")
+			.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+
+	//MARGINS AND SIZES FOR BAR
+	var margin = {top:10, left: 10, bottom: 10, right: 10};
+	var w = 640, h = 550;
+	var legend = { top: 0, left: 150, bottom:50, right:50};
+	var widthBar = 630 - legend.left - legend.right;
+	var heightBar = h - margin.top - margin.bottom - 40 - legend.top - legend.bottom;
+
+	var delayTime = 30, durationTime = 500;
+	//SCALES
+	var xScale = d3.scale
+			.ordinal()
+			.rangeRoundBands([0, widthBar], .05);
+
+	//do we need this at all????
+	var xScaleTransition = d3.scale
+			.ordinal()
+			.rangeRoundBands([0, 1000]);
+
+	var yScale = d3.scale.linear()
+			.rangeRound([heightBar, 0]);
+
+	var cCauseScale = d3.scale
+			.ordinal()
+			.range(["#1f77b4", "#ff7f0e", "green","#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf", "yellow","#45293C","#2abce9", "#5254a3", "#6b6ecf","#9c9ede", "#637939" ,"#8ca252", "#b5cf6b","#9abc21", "#24abcc","#FA960A", "#8c6d31", "#bd9e39", "#e7ba52", "#e7cb94", "#843c39", "#ad494a", "#AB21ff","ivory","#d6616b", "#e7969c", "#23d453","blue", "red", "#ab2309", "#7b4173", "#FFA09E", "#F2F21F", "#393b79", "#a55194","brown","cyan","maroon","#903abc", "#56abc0", "#ce6dbd","#12ab4a", "#de9ed6", "#bc12a4"]);
+
+	var causeDummyScale = d3.scale.ordinal();
+
+	//AXES
+	var xAxis = d3.svg.axis()
+			.scale(xScale)
+			.tickSize(0)
+			.orient("bottom");
+
+	var yAxis = d3.svg.axis()
+			.scale(yScale)
+			.orient("left");
+
+
+	//CONSTANTS
+	var BOTH = 0, MALE = 1, FEMALE = 2;
+	var RANK = 0, NUMBER = 1, PERCENT = 2, MORTALITY = 3;
+	var AGE = 0, YEAR = 1;
+
+	var mainFilter = AGE;
+	if(mainFilter == AGE)
+	{
+		$('select#menuYear').show();
+		$('select#menuAge').hide();
+	}
+	//let it be an array of values
+	var currUnit = PERCENT, currYear = 0, currSex =BOTH, currAge = 0;
+
+	//CREATE THE SVG ELEMENT
+	var svgBar = d3.select("#svgBar")
+			.append("svg")
+			.attr("width", w)
+			.attr("height", h);
+
+	var chart = d3.select("svg")
+			.append("g")
+			.attr("class", "chart")
+			.attr("transform", "translate(" + 40+ ",0)");
+
+	var yAxisGroup = d3.select("svg")
+			.append("g")
+			.attr("class", "y axis")
+			.attr("transform", "translate(" + 40+ ",0)");
+
+	var xAxisGroup = d3.select("svg")
+			.append("g")
+			.attr("class", "x axis")
+			.attr("transform", "translate(50," + heightBar + ")");
+
+	var legendGroup = d3.select("svg")
+			.append("g")
+			.attr("class", "legendGroup")
+			.attr("transform", "translate(" +(55+widthBar) +",0)");
+
+
+
+
+</script>
+</body>
+</html>
