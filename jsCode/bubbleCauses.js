@@ -6,6 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
+var colorAgeScale = d3.scale.category20();
 var nodeArrayObject = {	children: new Array() };
 
 d3.csv("data/01020561_EDITr2.csv", function(error, data)

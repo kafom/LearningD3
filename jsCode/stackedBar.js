@@ -3,6 +3,8 @@ var currentArray = [];
 var rects = Object();
 var barCol = Object();
 var dataAge = [], dataYear = [];
+
+
 //READ IN DATA
 d3.csv("data/01020561_EDITr2.csv", function(error, data)
 {
@@ -324,3 +326,4 @@ function setXFilterYear()
 	mainFilter = YEAR;
 	update();
 }
+

@@ -1,0 +1,41 @@
+SEPTEMBER 5:
+How to use jQuery to get the value of the checked radio button. You shouldn't do it
+on .click but on .change because if you do it on .click there it runs twice.
+
+  $( '#buttonsSex').change(function()
+  	{
+  		currSex = parseInt($('input:radio[name=sex]:checked').val());
+  		update();
+  	});
+
+
+
+September 4:
+How to split text inside of SVG until it is fixed in SVG 2.0
+- First split it into an array and then add the elements using tspan
+.each(function (d)
+		{                    //should be the same as the font size
+			var vSeparation = 13;
+			var lines = wordWrapText(d);
+			for (var i = 0; i < lines.length; i++)
+			{
+				d3.select(this).append("tspan").attr("dy",vSeparation).attr("x", d.x).text(lines[i]);
+			}
+		});
+For more info
+http://stackoverflow.com/questions/12677878/change-svg-text-to-css-word-wrapping
+
+
+You can't add a text to circle SVG.
+When you do force it is always moving around
+Use a tooltip function or js or add-on and then just customize the view.
+I'm using CustomTooltip by Vallingdam.
+
+SEPTEMBER 3
+How to use Force Directed in order to visualize a bubble chart.
+this is different from using the bubblechart layout that exists.
+bubbleCausesForceDirected.js.
+
+The bubble layout that exist.
+You need the array to have a children element and it will generate the x and y for all of your data itself.
+Kinda like the stack. bubble.js

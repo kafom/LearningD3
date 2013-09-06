@@ -4,32 +4,72 @@
 	<head>
 		<title>"Bubbles"</title>
 		<script type="text/javascript" src="d3/d3.v3.js"></script>
+		<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+		<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+		<script type="text/javascript" src="js/addCommaScript.js"></script>
+		<script type="text/javascript" src="js/CustomTooltip.js"></script>
 
-		<script type="text/javascript" src="bubblesCausesForceDirected.js"></script>
-		<style>
-			text {
-				font: 10px sans-serif;
-			}
-			body{
-				margin-top: 60px;
-				margin-left: 60px;
-			}
-		</style>
+		<script type="text/javascript" src="jsCode/bubblesCausesForceDirected.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/styleButtons.css">
+		<link rel="stylesheet" type="text/css" href="css/styleBubblesCauses.css">
+		<style>	</style>
 
 	</head>
 	<body>
+		<div id="controlPanel">
+			<div id = "buttonsSex">
+				<div class = "sex-button">
+					<input type="radio" name="sex" id ="button1" value = "1">
+					<label for = "button1" unselectable> Male</label>
+				</div>
+				<div class = "sex-button">
+					<input type="radio" name="sex" id ="button2" value = "0" checked>
+					<label for = "button2" unselectable> Both</label>
+				</div>
+				<div class = "sex-button">
+					<input type="radio" name="sex" id ="button3" value = "2">
+					<label for = "button3" unselectable> Female</label>
+				</div>
+			</div>
+			<form>			<select id="menuYear"></select>    	</form>
+			<form>  		<select id="menuAge"></select> 		</form>
+			<div id = "buttonsUnit">
+				<div class = "unit-button">
+					<input type="radio" name="unit" id ="button4" value = "3"checked>
+					<label for = "button4" unselectable> Mortality Rate</label>
+				</div>
+
+				<div class = "unit-button">
+					<input type="radio" name="unit" id ="button6" value="1">
+					<label for = "button6" unselectable> Number</label>
+				</div>
+			</div>
+			<div id = "buttonXFilter">
+				<div class = "xFilter-button">
+					<input type="radio" name="xFilter" id ="button7" checked value = "0">
+					<label for = "button7" unselectable> AGE</label>
+				</div>
+				<div class = "xFilter-button">
+					<input type="radio" name="xFilter" id ="button8" value = "1">
+					<label for = "button8" unselectable> YEAR</label>
+				</div>
+			</div>
+		</div>
+		<div id="vis"></div>
+		<div  class='tooltip' id="gates_tooltip"></div>
+		<input type="button" id="btnCompare" value="Show Labels" onclick = "createLabels()">
 		<script>
 
-		var diameter = 600,width= 940, height=600,
-				format = d3.format(",d");
+		var diameter = 600,width= 900, height=900,format = d3.format(",d");
 
+		//this is for the bubble.js option
 
 		var bubble = d3.layout.pack()
 				.sort(null)
 				.size([diameter, diameter])
 				.padding(1.5);   //spacing between the bubbles
 
-		var svg = d3.select("body")
+		var svg = d3.select("#vis")
 				.append("svg")
 				.attr("width", width)
 				.attr("height", height)
@@ -39,7 +79,7 @@
 
 		//d3.select(self.frameElement).style("height", diameter + "px");
 
-	</script>
+		</script>
 	</body>
 </html>
 

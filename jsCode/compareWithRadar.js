@@ -170,6 +170,8 @@ function compared(a,b)
 
 //do you need this or do you just need to turn off the guy for it
 //does there need to be an array. I believe for the causes yes, but for this not really
+
+
 $(document).ready(function()
 {
 	$('#geoSelectorPanel').click(function(event)
