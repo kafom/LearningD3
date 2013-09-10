@@ -1,0 +1,68 @@
+function formatGEO(currentGeo)
+{
+	switch(currentGeo){
+		case province[0]:return provinceAbbrList[0]; break;
+		case province[1]:return provinceAbbrList[1]; break;
+		case province[2]:return provinceAbbrList[2]; break;
+		case province[3]:return provinceAbbrList[3]; break;
+		case province[4]:return provinceAbbrList[4]; break;
+		case province[5]:return provinceAbbrList[5]; break;
+		case province[6]:return provinceAbbrList[6]; break;
+		case province[7]:return provinceAbbrList[7]; break;
+		case province[8]:return provinceAbbrList[8]; break;
+		case province[9]:return provinceAbbrList[9]; break;
+		case province[10]:return provinceAbbrList[10]; break;
+		case province[11]:return provinceAbbrList[11]; break;
+		case province[12]:return provinceAbbrList[12]; break;
+		case province[13]:return provinceAbbrList[13]; break;
+
+	}
+
+}
+function formatGEOLong(currentGeo)
+{
+	switch(currentGeo){
+		case provinceAbbrList[0]:return province[0]; break;
+		case provinceAbbrList[1]:return province[1]; break;
+		case provinceAbbrList[2]:return province[2]; break;
+		case provinceAbbrList[3]:return province[3]; break;
+		case provinceAbbrList[4]:return province[4]; break;
+		case provinceAbbrList[5]:return province[5]; break;
+		case provinceAbbrList[6]:return province[6]; break;
+		case provinceAbbrList[7]:return province[7]; break;
+		case provinceAbbrList[8]:return province[8]; break;
+		case provinceAbbrList[9]:return province[9]; break;
+		case provinceAbbrList[10]:return province[10]; break;
+		case provinceAbbrList[11]:return province[11]; break;
+		case provinceAbbrList[12]:return province[12]; break;
+		case provinceAbbrList[13]:return province[13]; break;
+
+	}
+
+}
+     //var rowCount = ,
+     	for(var i = 0; i < provinceAbbrList.length; i++)
+     	{
+     		var btn = document.createElement("input");
+     		btn.setAttribute("type", "button");
+     		btn.id = "btn"+provinceAbbrList[i];
+     		btn.value = province[i];       //this shouldn't be province it should read it in from the data.csv input file.
+     		document.getElementById('geoSelectorPanel').appendChild(btn);
+     	}
+
+     }
+     function createCauseButtons()
+     {
+     	for(var i = 0; i < causeList.length; i++)
+     	{
+     		var btn = document.createElement("input");
+     		btn.setAttribute("type", "button");
+     		btn.id = "btn"+causeList[i];
+     		btn.value = causeList[i];       //this shouldn't be province it should read it in from the data.csv input file.
+     		document.getElementById('causeSelectorPanel').appendChild(btn);
+     	}
+     }
+
+
+
+

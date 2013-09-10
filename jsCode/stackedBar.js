@@ -304,18 +304,8 @@ function setUnitPercent()
 	currUnit = PERCENT;
 	update();
 }
-function setYear(dropDown)
-{
-	var myIndex = dropDown.selectedIndex;
-	currYear = myIndex;
-	update();
-}
-function setAge(dropDown)
-{
-	var myIndex = dropDown.selectedIndex;
-	currAge = myIndex;
-	update();
-}
+
+
 function setXFilterAge()
 {
 	mainFilter = AGE;
