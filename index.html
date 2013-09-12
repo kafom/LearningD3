@@ -6,8 +6,8 @@
 		<script type="text/javascript" src="d3/d3.v3.js"></script>
 		<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
 		<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-		<script type="text/javascript" src="js/addCommaScript.js"></script>
-		<script type="text/javascript" src="js/CustomTooltip.js"></script>
+		<script type="text/javascript" src="jsCode/addCommaScript.js"></script>
+		<script type="text/javascript" src="jsCode/CustomTooltip.js"></script>
 
 		<script type="text/javascript" src="jsCode/bubblesCausesForceDirected.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/styleButtons.css">
@@ -57,7 +57,8 @@
 		</div>
 		<div id="vis"></div>
 		<div  class='tooltip' id="gates_tooltip"></div>
-		<input type="button" id="btnCompare" value="Show Labels" onclick = "createLabels()">
+		<input type="button" id="btnToggleLabel" value="Show Labels" onclick = "createLabels()">
+		<input type="button" id="btnToggle" value="HIde Labels" onclick = "hideLabels()">
 		<script>
 
 		var diameter = 600,width= 900, height=900,format = d3.format(",d");

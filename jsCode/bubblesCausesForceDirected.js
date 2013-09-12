@@ -22,6 +22,17 @@ var radiusScale;
 
 var center = {x: width / 2, y: height / 2};
 
+var year_centers = {
+	0: {x: width / 3, y: height / 4},
+	1: {x: width / 2, y: height / 4},
+	2: {x: 2 * width / 3, y: height / 4},
+	3: {x: width / 3, y: height / 2},
+	4: {x: width / 2, y: height / 2},
+	5: {x: 2 * width / 3, y: height / 2}
+};
+
+
+
 //CONSTANTS
 var BOTH = 0, MALE = 1, FEMALE = 2;
 var RANK = 0, NUMBER = 1, PERCENT = 2, MORTALITY = 3;
@@ -110,8 +121,9 @@ function refactorData()
 			sex: d.sex,
 			value: d.value,
 			r: radiusScale(d.value),
-			x: randomPosition[i].x,
-			y: randomPosition[i].y  //what do these numbers do????
+			year: i % 6
+		//	x: randomPosition[i].x,
+		//	y: randomPosition[i].y  //what do these numbers do????
 		};
 		nodeArray.push(node);
 
@@ -119,6 +131,52 @@ function refactorData()
 
 	nodeArray.sort(function(a,b) {return b.value - a.value;});   //descending order
 
+	setXY();
+
+}
+function display_by_year() {
+	force.gravity(layout_gravity)
+		.charge(charge)
+		.friction(0.9)
+		.on("tick", function(e) {
+			circles.each(move_towards_year(e.alpha))
+				.attr("cx", function(d) {return d.x;})
+				.attr("cy", function(d) {return d.y;});
+		});
+	force.start();
+	display_years();
+}
+
+function display_years() {
+	var years_x = {"2008": 160, "2009": width / 2, "2010": width - 160};
+	var years_data = d3.keys(years_x);
+	var years = svg.selectAll(".years")
+		.data(years_data);
+
+	years.enter().append("text")
+		.attr("class", "years")
+		.attr("x", function(d) { return years_x[d]; }  )
+		.attr("y", 40)
+		.attr("text-anchor", "middle")
+		.text(function(d) { return d;});
+
+}
+function move_towards_year(alpha) {
+	return function(d) {
+		var target = year_centers[d.year];
+		d.x = d.x + (target.x - d.x) * (damper + 0.02) * alpha * 1.1;
+		d.y = d.y + (target.y - d.y) * (damper + 0.02) * alpha * 1.1;
+	};
+}
+
+function setXY()
+{
+	nodeArray.forEach(function(d,i)
+	{
+
+		d.x = randomPosition[i].x;
+		d.y = randomPosition[i].y;
+	});
 }
 function visualize()
 {
@@ -141,7 +199,7 @@ function visualize()
 }
 function charge(d)
 {
-	return -Math.pow(d.r, 2.0) / 8;
+	return -Math.pow(d.r, 2.0) / 6;
 }
 function start()
 {
@@ -165,8 +223,32 @@ function display_group_all()
 
 
 }
+function displayAgain()
+{
+	force.gravity(layout_gravity)//force that pushes toward the center, 0 = disables - pushes away
+		.charge(function(d) {return -Math.pow(d.r, 2.0) / 5;})// charge)   //the distance between us, prevents collision tne NEGAIVE IS IMPORTANT oooooooooo                  	//how nodes push away or attract one another
+		.friction(0.9)  //velocity decay 0 = no movement 1= no friction
+		.on("tick", function(e)
+		{
+			circles.each(moveTowards(e.alpha)) //speed of the node starts fast ends slow
+				.attr("cx", function(d){ return d.x;})
+				.attr("cy", function(d){ return d.y;})
+		});
+
+	force.start();
+
+
+}
+
+function hideLabels()
+{
+	//$('.textLabel').attr("display", "none");
+	$(".textLabel").hide();
+	display_by_year();
+}
 function createLabels()
 {
+	display_group_all();
 	var texts = svg.selectAll("text")
 		.data(nodeArray.filter(function(d) { return d.r > 30; }))
 		.enter().append("text").attr("dy", ".3em")
@@ -192,6 +274,8 @@ function createLabels()
 				d3.select(this).append("tspan").attr("dy",vSeparation).attr("x", d.x).text(lines[i]);
 			}
 		});
+
+	$(".textLabel").show();
 
 //.text(function(d) { return formatLabelText(d);});
 }
@@ -230,6 +314,13 @@ function move_towards_center(alpha) {
 	return function(d) {
 		d.x = d.x + (center.x - d.x) * (damper + 0.02) * alpha;
 		d.y = d.y + (center.y - d.y) * (damper + 0.02) * alpha;
+	};
+}
+
+function moveTowards(alpha) {
+	return function(d) {
+		d.x = d.x + (center.x - d.x) * (damper + 0.02) * alpha*1.1;
+		d.y = d.y + (center.y - d.y) * (damper + 0.02) * alpha*1.1;
 	};
 }
 
@@ -294,15 +385,20 @@ function update()
 //	console.log("The currSex = "+ currSex);
 	refactorData();
 	updateVis();
-	display_group_all();
+
 }
+
 function updateVis()
 {
+	var y = 10;
+
 	//SELECT ALL
 	circles = svg.selectAll("circle")
 		.data(nodeArray);
 
+	var x = 10;
 	//CREATE NEW ONES
+	/*
 	circles.enter().append("circle")
 		.attr("r", function(d) { return d.r; })
 		.attr("id", function(d){ return "circle"+d.id;})
@@ -312,7 +408,7 @@ function updateVis()
 		.attr("stroke-width", 2)
 		.on("mouseover", function(d, i) {show_details(d, i, this);})
 		.on("mouseout", function(d, i) {hide_details(d, i, this);} );
-
+     */
 
 	//updatE THE OLD ONES
 	circles.transition().duration(250).attr("r", function(d) { return d.r; });
@@ -320,6 +416,10 @@ function updateVis()
 
 	//DELETE THE ONES WE DON'T NEED
 	circles.exit().remove();
+
+
+	//display_group_all();
+	displayAgain();
 
 
 }
