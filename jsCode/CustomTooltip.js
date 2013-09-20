@@ -38,8 +38,8 @@ function CustomTooltip(tooltipId, width)
 
 	function updatePosition(event){
 		var ttid = "#"+tooltipId;
-		var xOffset = 20;
-		var yOffset = 10;
+		var xOffset = 20;//20 original
+		var yOffset = 10;//10 original
 
 		var ttw = $(ttid).width();
 		var tth = $(ttid).height();

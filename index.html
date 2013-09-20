@@ -1,86 +1,146 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
-<html>
+<html lang="en">
 	<head>
-		<title>"Bubbles"</title>
+		<meta charset="utf-8">
+		<title>Select the Representation based on the user's input.</title>
+
 		<script type="text/javascript" src="d3/d3.v3.js"></script>
 		<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
 		<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-		<script type="text/javascript" src="jsCode/addCommaScript.js"></script>
-		<script type="text/javascript" src="jsCode/CustomTooltip.js"></script>
+		<script src="http://d3js.org/colorbrewer.v1.min.js"></script>
 
-		<script type="text/javascript" src="jsCode/bubblesCausesForceDirected.js"></script>
-		<link rel="stylesheet" type="text/css" href="css/styleButtons.css">
-		<link rel="stylesheet" type="text/css" href="css/styleBubblesCauses.css">
-		<style>	</style>
+		<script type="text/javascript" src="jsCode/heatMap.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/styleHeatMap.css">
 
 	</head>
 	<body>
-		<div id="controlPanel">
-			<div id = "buttonsSex">
-				<div class = "sex-button">
-					<input type="radio" name="sex" id ="button1" value = "1">
-					<label for = "button1" unselectable> Male</label>
-				</div>
-				<div class = "sex-button">
-					<input type="radio" name="sex" id ="button2" value = "0" checked>
-					<label for = "button2" unselectable> Both</label>
-				</div>
-				<div class = "sex-button">
-					<input type="radio" name="sex" id ="button3" value = "2">
-					<label for = "button3" unselectable> Female</label>
-				</div>
-			</div>
-			<form>			<select id="menuYear"></select>    	</form>
-			<form>  		<select id="menuAge"></select> 		</form>
-			<div id = "buttonsUnit">
-				<div class = "unit-button">
-					<input type="radio" name="unit" id ="button4" value = "3"checked>
-					<label for = "button4" unselectable> Mortality Rate</label>
-				</div>
+		<div id = "buttonsUnit">
+	<div class = "unit-button">
+		<input type="radio" name="unit" id ="button4" checked onclick = "setUnitPercent()">
+		<label for = "button4" unselectable> %</label>
+	</div>
+	<div class = "unit-button">
+		<input type="radio" name="unit" id ="button5" onclick = "setUnitRate()">
+		<label for = "button5" unselectable> Rate</label>
+	</div>
+	<div class = "unit-button">
+		<input type="radio" name="unit" id ="button6"  onclick = "setUnitNum()">
+		<label for = "button6" unselectable> #</label>
+	</div>
+</div>
 
-				<div class = "unit-button">
-					<input type="radio" name="unit" id ="button6" value="1">
-					<label for = "button6" unselectable> Number</label>
-				</div>
-			</div>
-			<div id = "buttonXFilter">
-				<div class = "xFilter-button">
-					<input type="radio" name="xFilter" id ="button7" checked value = "0">
-					<label for = "button7" unselectable> AGE</label>
-				</div>
-				<div class = "xFilter-button">
-					<input type="radio" name="xFilter" id ="button8" value = "1">
-					<label for = "button8" unselectable> YEAR</label>
-				</div>
-			</div>
-		</div>
-		<div id="vis"></div>
-		<div  class='tooltip' id="gates_tooltip"></div>
-		<input type="button" id="btnToggleLabel" value="Show Labels" onclick = "createLabels()">
-		<input type="button" id="btnToggle" value="HIde Labels" onclick = "hideLabels()">
-		<script>
+		<form>
+	<select id="menuYear" onchange="setYear(this.form.menuYear)">
+		<option>2000</option>
+		<option>2001</option>
+		<option>2002</option>
+		<option>2003</option>
+		<option>2004</option>
+		<option>2005</option>
+		<option>2006</option>
+		<option>2007</option>
+		<option>2008</option>
+		<option>2009</option>
+	</select>
+</form>
+		<div id = "popBar"> </div>
+		<script type = "text/javascript">
 
-		var diameter = 600,width= 900, height=900,format = d3.format(",d");
+	//Borders, margins and sizes
+	var margin = {top: 20, right: 20, bottom: 20, left: 20};
+	var legend = {top: 10, right: 10, bottom: 50, left: 50};
 
-		//this is for the bubble.js option
+	var widthWhole = 1050 - (margin.right + margin.left);
+	var heightWhole = 500 - (margin.bottom+ margin.top);
 
-		var bubble = d3.layout.pack()
-				.sort(null)
-				.size([diameter, diameter])
-				.padding(1.5);   //spacing between the bubbles
+	var width = 550 - (margin.right+ margin.left + legend.right + legend.left);
+	var height = 425 - (margin.top +margin.bottom+ legend.top + legend.bottom);
 
-		var svg = d3.select("#vis")
-				.append("svg")
-				.attr("width", width)
-				.attr("height", height)
-				.attr("class", "bubble");
+	var legendBarSpace = 15, labelBarSpace = 15;
+	var widthBar = 130 - labelBarSpace;//widthWhole - width - 2*(margin.left+margin.right) -50;  //around250
+	var heightBar = 100 - legendBarSpace;
+
+	var legendLeft = legend.left;
+	var legendTop = legend.top;
+	var legendBottom = legend.bottom;
+
+	var buckets = 10;
+
+	//THE SCALES
+	var space = .03;
+	var xScale = d3.scale
+			.ordinal()
+			.rangeRoundBands([0, width],space);
+
+	var yScale = d3.scale
+			.ordinal()
+			.rangeRoundBands([0, height], space);
+
+	var colorScale = d3.scale
+			.quantile()
+			.range(["#ffffd9","#edf8b1","#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8","#253494","#081d58"]) //GnBu
+			.range(colorbrewer.YlGnBu[buckets - 1])
+			.range(colorbrewer.YlOrBr[buckets - 1]);
+
+	var colorScaleBar = d3.scale
+			.ordinal()
+			.range(["red", "blue"]);
 
 
+	//SCALES FOR THE BAR GRAPH
+	var spaceBar = .1,spaceBarInner = 0.1;
 
-		//d3.select(self.frameElement).style("height", diameter + "px");
+	var xScaleBar = d3.scale
+			.ordinal()      //is this the pixel, we should translate the whole part of it
+			.rangeRoundBands([0, widthBar],spaceBar);
 
-		</script>
+	var xScaleBarInner = d3.scale
+			.ordinal();
+
+	var yScaleBar = d3.scale
+			.linear()
+			.range([5, heightBar], spaceBar);
+
+	//GLOBAL VARIABLE FOR THE DATA
+	var currentCause = "Other causes of death";
+	var currentAge = "60 to 64 years";
+	var currentYear = 2000;
+	var currentUnit = "Number";
+	var filteredDatasetBAR = [];
+	var dataset = [];
+	var filteredDatasetHM = [];
+
+
+	selected =new Object();
+	//SVG ELEMENT
+	var svg = d3.select("body")
+			.append("svg")
+			.attr("width", widthWhole)
+			.attr("height", heightWhole);
+
+	var heatMap = svg.append("g")
+			.attr("class", "heatmap")
+			.attr("transform", "translate(" + legendLeft + ", "+ legendTop + ")");
+
+	var legendHM = svg.append("g")
+			.attr("class", "legend");
+
+	var labelHM = svg.append("g")
+			.attr("class", "label");
+
+	var svgPop = d3.select("#popBar")
+			.append("svg")
+			.attr("width", widthBar + labelBarSpace)
+			.attr("height", heightBar + legendBarSpace);
+
+	var barChart = svgPop.append("g")
+			.attr("class", "barChart");
+
+	var legendB = svgPop.append("g")
+			.attr("class", "legend");
+
+	var labelB = svgPop.append("g")
+			.attr("class", "label");
+	</script>
 	</body>
 </html>
-
